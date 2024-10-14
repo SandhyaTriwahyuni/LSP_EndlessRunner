@@ -32,14 +32,18 @@ public class PlayerManager : MonoBehaviour
             StartCoroutine(GameOverSequence());
         }
 
-        // Detect tap to start the game
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && !IsGameStarted)
+        // Detect Enter key to start the game
+        if (Input.GetKeyDown(KeyCode.Return) && !IsGameStarted)
         {
-            playerControl.OnTap();
+            playerControl.enabled = true; 
+            IsGameStarted = true;
+            Destroy(StartingText);
+
             IsGameStarted = true;
             Destroy(StartingText);
         }
     }
+
 
     IEnumerator GameOverSequence()
     {

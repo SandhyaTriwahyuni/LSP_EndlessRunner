@@ -14,15 +14,7 @@ public class PlayerControl : MonoBehaviour
     public float LaneChangeSpeed = 10f;
 
     private Vector3 _targetPosition;
-    private Vector3 _initialPosition; // Deklarasi variabel _initialPosition
-
-    private Vector2 startTouchPosition, endTouchPosition;
-    private float swipeRange = 50.0f;
-    private float tapRange = 10.0f; // Range to detect a tap
-    private float tapTimeMax = 0.2f; // Maximum time to detect a tap
-    private float tapTime;
-
-    private bool isSwiping = false;
+    private Vector3 _initialPosition;
 
     public float JumpForce;
     public float MaxJumpForce;
@@ -32,40 +24,36 @@ public class PlayerControl : MonoBehaviour
 
     private Animator _animator;
 
-    // Height awal dan height saat slide
     public float NormalHeight = 1.5f;
     public float SlideHeight = 1.0f;
     private float _originalHeight;
     private float _originalCenterY;
 
-    private bool isSliding = false; // Flag untuk mengecek apakah sedang slide
+    private bool isSliding = false;
 
-    //PowerUp
+    // PowerUp
     public GameObject bulletPrefab;
     public Transform bulletSpawnPoint;
     public float bulletSpeed = 20f;
     public int bulletsToShoot = 8;
 
     public HealthManager HealthManager;
-    public PlayerManager PlayerManager; // Tambahkan referensi ke PlayerManager
+    public PlayerManager PlayerManager;
 
-    // Start is called before the first frame update
     void Start()
     {
         _characterController = GetComponent<CharacterController>();
-        _animator = GetComponent<Animator>(); // Mendapatkan komponen Animator
-        _initialPosition = transform.position; // Inisialisasi _initialPosition dengan posisi awal
-        _originalHeight = _characterController.height; // Menyimpan tinggi awal CharacterController
-        _originalCenterY = _characterController.center.y; // Menyimpan nilai awal center.y CharacterController
+        _animator = GetComponent<Animator>();
+        _initialPosition = transform.position;
+        _originalHeight = _characterController.height;
+        _originalCenterY = _characterController.center.y;
 
         HealthManager = FindObjectOfType<HealthManager>();
-        PlayerManager = FindObjectOfType<PlayerManager>(); // Cari PlayerManager pada scene
+        PlayerManager = FindObjectOfType<PlayerManager>();
 
-        // Menjadikan bulletSpawnPoint anak dari Player
         bulletSpawnPoint.parent = transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
         // Periksa apakah game sudah dimulai dan belum game over
@@ -87,17 +75,14 @@ public class PlayerControl : MonoBehaviour
             _direction.z = ForwardSpeed;
             _direction.y += Gravity * Time.deltaTime;
 
-            if (_characterController.isGrounded)
+            if (_characterController.isGrounded && isJumping)
             {
-                if (isJumping)
-                {
-                    isJumping = false;
-                    ReturnToRunningAnimation();
-                }
+                isJumping = false;
+                ReturnToRunningAnimation();
             }
 
-            // Memeriksa input gesekan (swipe)
-            SwipeCheck();
+            // Memeriksa input dari keyboard
+            HandleKeyboardInput();
 
             // Menghitung posisi target berdasarkan jalur yang diinginkan
             Vector3 lanePosition = transform.position.z * transform.forward + transform.position.y * transform.up;
@@ -117,6 +102,14 @@ public class PlayerControl : MonoBehaviour
         {
             // Game over atau belum dimulai, hentikan pergerakan
             _direction.z = 0;
+
+            // Start game with Enter key
+            if (Input.GetKeyDown(KeyCode.Return) && !PlayerManager.IsGameStarted)
+            {
+                PlayerManager.IsGameStarted = true;
+                Destroy(PlayerManager.StartingText);
+            }
+
         }
     }
 
@@ -132,97 +125,28 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    // Memeriksa input gesekan (swipe) dan tap
-    void SwipeCheck()
+    // Menangani input keyboard
+    void HandleKeyboardInput()
     {
-        if (Input.touchCount > 0)
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            Touch touch = Input.GetTouch(0);
-
-            if (touch.phase == TouchPhase.Began)
-            {
-                startTouchPosition = touch.position;
-                isSwiping = true;
-                tapTime = 0; // Added for tap detection
-            }
-            else if (touch.phase == TouchPhase.Moved && isSwiping)
-            {
-                endTouchPosition = touch.position;
-                DetectSwipe();
-            }
-            else if (touch.phase == TouchPhase.Ended)
-            {
-                endTouchPosition = touch.position;
-                if (isSwiping)
-                {
-                    DetectSwipe();
-                }
-                DetectTap(); // Added for tap detection
-                ResetSwipe();
-            }
-
-            // Increment the tap timer
-            if (isSwiping)
-            {
-                tapTime += Time.deltaTime; // Added for tap detection
-            }
+            OnSwipeLeft();
+        }
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            OnSwipeRight();
+        }
+        else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            OnSwipeUp();
+        }
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            OnSwipeDown();
         }
     }
 
-    // Mendeteksi gesekan (swipe)
-    void DetectSwipe()
-    {
-        
-        Vector2 distance = endTouchPosition - startTouchPosition;
-
-        if (distance.magnitude > swipeRange)
-        {
-            SoundManager.Instance.PlaySound3D("swipe", transform.position);
-            if (Mathf.Abs(distance.x) > Mathf.Abs(distance.y))
-            {
-                // Gesekan ke kiri atau ke kanan
-                if (distance.x > 0)
-                {
-                    OnSwipeRight();
-                }
-                else
-                {
-                    OnSwipeLeft();
-                }
-            }
-            else
-            {
-                // Gesekan ke atas atau ke bawah
-                if (distance.y > 0)
-                {
-                    OnSwipeUp();
-                }
-                else
-                {
-                    OnSwipeDown();
-                }
-            }
-            ResetSwipe();
-        }
-    }
-
-    void DetectTap() // Added for tap detection
-    {
-        Vector2 distance = endTouchPosition - startTouchPosition;
-
-        if (distance.magnitude < tapRange && tapTime < tapTimeMax)
-        {
-            OnTap();
-        }
-    }
-
-    void ResetSwipe()
-    {
-        startTouchPosition = endTouchPosition = Vector2.zero;
-        isSwiping = false;
-    }
-
-    // Tindakan ketika gesekan ke kiri
+    // Tindakan ketika input kiri
     void OnSwipeLeft()
     {
         if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
@@ -233,7 +157,7 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    // Tindakan ketika gesekan ke kanan
+    // Tindakan ketika input kanan
     void OnSwipeRight()
     {
         if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
@@ -244,7 +168,7 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    // Tindakan ketika gesekan ke atas (untuk melompat)
+    // Tindakan ketika input atas (untuk melompat)
     void OnSwipeUp()
     {
         if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
@@ -253,25 +177,16 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    // Tindakan ketika gesekan ke bawah (untuk slide)
+    // Tindakan ketika input bawah (untuk slide)
     void OnSwipeDown()
     {
         if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
         {
             if (!isSliding)
             {
-                _animator.SetTrigger("Slide"); // Memanggil trigger "Slide" pada Animator
+                _animator.SetTrigger("Slide");
                 StartCoroutine(SlideCoroutine());
             }
-        }
-    }
-
-    // Tindakan ketika tap
-    public void OnTap() // Added for tap detection
-    {
-        //if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
-        {
-         
         }
     }
 
@@ -285,14 +200,11 @@ public class PlayerControl : MonoBehaviour
                 isJumping = true;
                 _animator.SetTrigger("Jump");
             }
-
-            
         }
     }
 
     private void ReturnToRunningAnimation()
     {
-        // Setelah animasi selesai, pastikan kembali ke posisi yang benar
         _targetPosition.z += transform.position.z - _initialPosition.z;
     }
 
@@ -300,17 +212,16 @@ public class PlayerControl : MonoBehaviour
     {
         if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
         {
-            isSliding = true; // Mengatur flag isSliding menjadi true
-            _characterController.height = SlideHeight; // Ubah tinggi CharacterController saat slide
-            _characterController.center = new Vector3(_characterController.center.x, 0.4f, _characterController.center.z); // Ubah center.y saat slide
-            yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length); // Tunggu hingga animasi slide selesai
-            _characterController.height = _originalHeight; // Kembalikan tinggi CharacterController setelah animasi slide selesai
-            _characterController.center = new Vector3(_characterController.center.x, _originalCenterY, _characterController.center.z); // Kembalikan center.y setelah animasi slide selesai
-            isSliding = false; // Mengatur flag isSliding menjadi false setelah slide selesai
+            isSliding = true;
+            _characterController.height = SlideHeight;
+            _characterController.center = new Vector3(_characterController.center.x, 0.4f, _characterController.center.z);
+            yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
+            _characterController.height = _originalHeight;
+            _characterController.center = new Vector3(_characterController.center.x, _originalCenterY, _characterController.center.z);
+            isSliding = false;
         }
     }
 
-    //Ketika Player menabrak Obstacle
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.transform.tag == "Obstacle")
@@ -341,7 +252,7 @@ public class PlayerControl : MonoBehaviour
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
             rb.velocity = bulletSpawnPoint.forward * bulletSpeed;
 
-            yield return new WaitForSeconds(0.1f); // Jeda waktu antara setiap tembakan
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }
