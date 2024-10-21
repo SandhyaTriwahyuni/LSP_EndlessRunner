@@ -14,6 +14,7 @@ public class HealthManager : MonoBehaviour
     public Image Fill;
 
     public PlayerManager PlayerManager;
+    public ScoreSystem ScoreSystem;
 
     void Start()
     {
@@ -82,7 +83,7 @@ public class HealthManager : MonoBehaviour
             PlayerManager.GameOver = true; // Aktifkan game over jika health mencapai 0
         }
         HealthBar.value = _currentHealth; // Perbarui nilai slider
-        UpdateHealthBarColor(); // Perbarui warna slider
+        UpdateHealthBarColor(); 
     }
 
     void OnTriggerEnter(Collider other)
@@ -90,9 +91,9 @@ public class HealthManager : MonoBehaviour
         if (other.CompareTag("Medicine"))
         {
             IncreaseHealth();
-            //mainkan sound poin
             SoundManager.Instance.PlaySound3D("Poin",transform.position);
-            Destroy(other.gameObject); // Hapus obat setelah dikumpulkan
+            ScoreSystem.TerasiHit();
+            Destroy(other.gameObject); 
         }
     }
 

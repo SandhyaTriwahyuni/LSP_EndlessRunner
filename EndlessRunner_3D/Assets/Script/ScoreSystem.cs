@@ -5,30 +5,48 @@ public class ScoreSystem : MonoBehaviour
 {
     public TextMeshProUGUI ScoreTextHUD; // Untuk UI HUD
     public TextMeshProUGUI ScoreTextGameOver; // Untuk UI Game Over
-    public TextMeshProUGUI HiScoreText;
+    public TextMeshProUGUI ScoreTextWin; // Untuk UI Win
 
-    private float _startTime;
     private float _score;
-    private float _highScore;
-
-    private const float PointsPerMillisecond = 10f;
+    private float _currentScore;
+    public int maxScore; // Skor maksimum untuk memenangkan permainan
 
     void Start()
     {
-        _startTime = Time.time;
         _score = 0;
-        _highScore = PlayerPrefs.GetFloat("HighScore", 0f);
+        _currentScore = 0; // Inisialisasi _currentScore
         UpdateScoreHUD();
-        UpdateHighScore();
     }
 
     void Update()
     {
-        if (!PlayerManager.IsGameStarted || PlayerManager.GameOver)
+        if (PlayerManager.GameOver)
             return;
 
-        float currentTime = Time.time - _startTime;
-        _score = currentTime * PointsPerMillisecond;
+        // Update total score with current score
+        _score = _currentScore;
+        UpdateScoreHUD();
+
+        // Cek apakah skor mencapai 100
+        if (_score >= maxScore)
+        {
+            PlayerManager.GameOver = true; // Set game over jika menang
+        }
+    }
+
+    public void TerasiHit()
+    {
+        _currentScore += 1f; // Menambah skor
+        UpdateScoreHUD();
+    }
+
+    public void ObstacleHit()
+    {
+        _currentScore -= 5f; // Mengurangi skor
+        if (_currentScore < 0)
+        {
+            _currentScore = 0;
+        }
         UpdateScoreHUD();
     }
 
@@ -36,7 +54,7 @@ public class ScoreSystem : MonoBehaviour
     {
         if (ScoreTextHUD != null)
         {
-            ScoreTextHUD.text = "SCORE: " + Mathf.Round(_score).ToString();
+            ScoreTextHUD.text = Mathf.Round(_score).ToString() + "/100";
         }
     }
 
@@ -44,24 +62,16 @@ public class ScoreSystem : MonoBehaviour
     {
         if (ScoreTextGameOver != null)
         {
-            ScoreTextGameOver.text = "SCORE: " + Mathf.Round(_score).ToString();
+            ScoreTextGameOver.text = "TERASI: " + Mathf.Round(_score).ToString();
         }
 
-        // Periksa apakah skor saat ini lebih tinggi dari high score
-        if (_score > _highScore)
+        if (ScoreTextWin != null) // Pastikan ini hanya diupdate di kondisi menang
         {
-            _highScore = _score;
-            PlayerPrefs.SetFloat("HighScore", _highScore);
-            PlayerPrefs.Save();
-            UpdateHighScore(); // Perbarui tampilan high score
+            ScoreTextWin.text = "TERASI: " + Mathf.Round(_score).ToString();
         }
     }
-
-    void UpdateHighScore()
+    public bool HasPlayerWon()
     {
-        if (HiScoreText != null)
-        {
-            HiScoreText.text = "HIGH SCORE: " + Mathf.Round(_highScore).ToString();
-        }
+        return _score >= maxScore;
     }
 }

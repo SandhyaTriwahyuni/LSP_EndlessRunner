@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -37,7 +38,14 @@ public class PlayerControl : MonoBehaviour
     public float bulletSpeed = 20f;
     public int bulletsToShoot = 8;
 
+    //Distance
+    public TextMeshProUGUI distanceTextGO; // UI Text untuk menampilkan jarak
+    public TextMeshProUGUI distanceTextWin;
+    private Vector3 lastPosition; // Posisi terakhir pemain
+    private float distanceTraveled; // Jarak yang sudah ditempuh
+
     public HealthManager HealthManager;
+    public ScoreSystem ScoreSystem;
     public PlayerManager PlayerManager;
 
     void Start()
@@ -52,6 +60,9 @@ public class PlayerControl : MonoBehaviour
         PlayerManager = FindObjectOfType<PlayerManager>();
 
         bulletSpawnPoint.parent = transform;
+
+        lastPosition = transform.position; // Menginisialisasi posisi awal
+        distanceTraveled = 0f; // Mengatur jarak awal ke 0
     }
 
     void Update()
@@ -111,6 +122,14 @@ public class PlayerControl : MonoBehaviour
             }
 
         }
+
+        float distanceThisFrame = Vector3.Distance(lastPosition, transform.position);
+        distanceTraveled += distanceThisFrame; // Menambahkan jarak baru ke total
+        lastPosition = transform.position; // Memperbarui posisi terakhir
+
+        // Menampilkan jarak di UI
+        distanceTextGO.text = "Distance: " + distanceTraveled.ToString("F2") + " m";
+        distanceTextWin.text = "Distance: " + distanceTraveled.ToString("F2") + " m";
     }
 
     private void FixedUpdate()
@@ -229,6 +248,7 @@ public class PlayerControl : MonoBehaviour
             if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
             {
                 HealthManager.ObstacleHit();
+                ScoreSystem.ObstacleHit();
                 _animator.SetTrigger("Stumble");
                 Destroy(hit.gameObject);
             }
