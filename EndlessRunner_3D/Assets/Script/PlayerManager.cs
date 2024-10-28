@@ -58,7 +58,7 @@ public class PlayerManager : MonoBehaviour
         GameOverPanel.SetActive(true);
         if (ScoreSystem != null)
         {
-            ScoreSystem.DisplayGameOverScore();
+            ScoreSystem.DisplayGameOverScore(); // Tampilkan skor saat game over
         }
     }
 
@@ -66,13 +66,12 @@ public class PlayerManager : MonoBehaviour
     {
         //PlayerAnimator.SetTrigger("Win"); // Jika ada animasi kemenangan
         yield return new WaitForSecondsRealtime(2f); // Menunggu hingga animasi "Win" selesai
-
         Time.timeScale = 0;
         HUD.SetActive(false);
         WinPanel.SetActive(true); // Tampilkan UI untuk kondisi menang
         if (ScoreSystem != null)
         {
-            ScoreSystem.DisplayGameOverScore();
+            ScoreSystem.DisplayGameOverScore(); // Tampilkan skor saat menang
         }
     }
 }
