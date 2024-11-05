@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public TextMeshProUGUI HiScoreText;
     public AudioMixer AudioMixer;
     public Slider MusicSlider;
     public Slider SfxSlider;
@@ -20,21 +19,13 @@ public class MainMenu : MonoBehaviour
 
         //Memainkan music
         MusicManager.Instance.PlayMusic("MainMenu");
-
-        // Ambil high score dari PlayerPrefs
-        float highScore = PlayerPrefs.GetFloat("HighScore", 0f);
-
-        // Tampilkan high score di UI
-        if (HiScoreText != null)
-        {
-            HiScoreText.text = Mathf.Round(highScore).ToString();
-        }
     }
     public void PlayGame()
     {
         SceneManager.LoadScene("GamePlay");
         MusicManager.Instance.PlayMusic("GamePlay");
     }
+
     public void UpdateMusicVolume(float volume)
     {
         AudioMixer.SetFloat("MusicVol", volume);
@@ -58,6 +49,11 @@ public class MainMenu : MonoBehaviour
     {
         MusicSlider.value = PlayerPrefs.GetFloat("MusicVol");
         SfxSlider.value = PlayerPrefs.GetFloat("SFXVol");
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 
 }

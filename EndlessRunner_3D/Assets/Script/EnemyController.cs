@@ -69,7 +69,7 @@ public class EnemyController : MonoBehaviour
         if (other.CompareTag("Player") && !_isDead)
         {
             _animator.SetTrigger("Attack");
-            HealthManager.EnemyHit();
+            //HealthManager.EnemyHit();
         }
 
         else if (other.CompareTag("Bullet"))

@@ -11,8 +11,8 @@ public class PlayerControl : MonoBehaviour
     public float MaxSpeed;
 
     private int _desiredLane = 1; // 0: Kiri, 1: Tengah, 2: Kanan
-    public float LaneDistance = 2.8f;
-    public float LaneChangeSpeed = 10f;
+    public float LaneDistance;
+    public float LaneChangeSpeed;
 
     private Vector3 _targetPosition;
     private Vector3 _initialPosition;
@@ -25,18 +25,18 @@ public class PlayerControl : MonoBehaviour
 
     private Animator _animator;
 
-    public float NormalHeight = 1.5f;
-    public float SlideHeight = 1.0f;
+    public float NormalHeight;
+    public float SlideHeight;
     private float _originalHeight;
     private float _originalCenterY;
 
     private bool isSliding = false;
 
     // PowerUp
-    public GameObject bulletPrefab;
-    public Transform bulletSpawnPoint;
-    public float bulletSpeed = 20f;
-    public int bulletsToShoot = 8;
+    //public GameObject bulletPrefab;
+    //public Transform bulletSpawnPoint;
+    //public float bulletSpeed = 20f;
+    //public int bulletsToShoot = 8;
 
     //Distance
     public TextMeshProUGUI distanceTextGO; // UI Text untuk menampilkan jarak
@@ -59,7 +59,7 @@ public class PlayerControl : MonoBehaviour
         HealthManager = FindObjectOfType<HealthManager>();
         PlayerManager = FindObjectOfType<PlayerManager>();
 
-        bulletSpawnPoint.parent = transform;
+        //bulletSpawnPoint.parent = transform;
 
         lastPosition = transform.position; // Menginisialisasi posisi awal
         distanceTraveled = 0f; // Mengatur jarak awal ke 0
@@ -255,24 +255,24 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    public void ActivatePowerUp()
-    {
-        if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
-        {
-            StartCoroutine(ShootBullets());
-            SoundManager.Instance.PlaySound3D("Shoot", transform.position);
-        }
-    }
+    //public void ActivatePowerUp()
+    //{
+    //    if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
+    //    {
+    //        StartCoroutine(ShootBullets());
+    //        SoundManager.Instance.PlaySound3D("Shoot", transform.position);
+    //    }
+    //}
 
-    private IEnumerator ShootBullets()
-    {
-        for (int i = 0; i < bulletsToShoot; i++)
-        {
-            GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-            Rigidbody rb = bullet.GetComponent<Rigidbody>();
-            rb.velocity = bulletSpawnPoint.forward * bulletSpeed;
+    //private IEnumerator ShootBullets()
+    //{
+    //    for (int i = 0; i < bulletsToShoot; i++)
+    //    {
+    //        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+    //        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+    //        rb.velocity = bulletSpawnPoint.forward * bulletSpeed;
 
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
+    //        yield return new WaitForSeconds(0.1f);
+    //    }
+    //}
 }

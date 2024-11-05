@@ -6,8 +6,8 @@ public class StreetManager : MonoBehaviour
 {
     public GameObject[] JalanPrefabs;
     public float ZSpawn = 0;
-    public float JalanLength = 40;
-    public int NumberOfJalan = 10;
+    public float JalanLength;
+    public int NumberOfJalan;
 
     private List<GameObject> _activeJalan = new List<GameObject>();
     private Queue<int> _lastSpawnedIndexes = new Queue<int>();

@@ -33,16 +33,17 @@ public class HealthManager : MonoBehaviour
         }
     }
 
+    //Mengurangi tenaga perdetik
     void DecreaseHealth()
     {
-        _currentHealth -= HealthDecreaseRate * Time.deltaTime; // Kurangi health saat ini
+        _currentHealth -= HealthDecreaseRate * Time.deltaTime;
         if (_currentHealth < 0)
         {
-            _currentHealth = 0; // Pastikan health tidak negatif
-            PlayerManager.GameOver = true; // Aktifkan game over jika health mencapai 0
+            _currentHealth = 0;
+            PlayerManager.GameOver = true;
         }
-        HealthBar.value = _currentHealth; // Perbarui nilai slider
-        UpdateHealthBarColor(); // Perbarui warna slider
+        HealthBar.value = _currentHealth;
+        UpdateHealthBarColor();
     }
 
     public void IncreaseHealth()
@@ -50,40 +51,29 @@ public class HealthManager : MonoBehaviour
         // Hanya izinkan peningkatan kesehatan jika game belum berakhir
         if (!PlayerManager.GameOver)
         {
-            _currentHealth += HealthIncreaseAmount; // Tambahkan health saat ini
+            _currentHealth += HealthIncreaseAmount;
             if (_currentHealth > MaxHealth)
             {
-                _currentHealth = MaxHealth; // Pastikan health tidak melebihi maksimum
+                _currentHealth = MaxHealth;
             }
-            HealthBar.value = _currentHealth; // Perbarui nilai slider
-            UpdateHealthBarColor(); // Perbarui warna slider
+            HealthBar.value = _currentHealth;
+            UpdateHealthBarColor();
         }
     }
 
-    public void EnemyHit()
-    {
-        _currentHealth -= 50f; // Mengurangi health sebesar 50
-        SoundManager.Instance.PlaySound3D("Die", transform.position);
-        if (_currentHealth < 0)
-        {
-            _currentHealth = 0; // Pastikan health tidak negatif
-            PlayerManager.GameOver = true; // Aktifkan game over jika health mencapai 0
-        }
-        HealthBar.value = _currentHealth; // Perbarui nilai slider
-        UpdateHealthBarColor(); // Perbarui warna slider
-    }
 
+    // Mengurangi tenaga sebesar 10 ketika terkena obstacle
     public void ObstacleHit()
     {
-        _currentHealth -= 10f; // Mengurangi health sebesar 10
+        _currentHealth -= 10f;
         SoundManager.Instance.PlaySound3D("Die", transform.position);
         if (_currentHealth < 0)
         {
-            _currentHealth = 0; // Pastikan health tidak negatif
-            PlayerManager.GameOver = true; // Aktifkan game over jika health mencapai 0
+            _currentHealth = 0;
+            PlayerManager.GameOver = true;
         }
-        HealthBar.value = _currentHealth; // Perbarui nilai slider
-        UpdateHealthBarColor(); 
+        HealthBar.value = _currentHealth;
+        UpdateHealthBarColor();
     }
 
     void OnTriggerEnter(Collider other)
@@ -91,15 +81,30 @@ public class HealthManager : MonoBehaviour
         if (other.CompareTag("Medicine"))
         {
             IncreaseHealth();
-            SoundManager.Instance.PlaySound3D("Poin",transform.position);
+            SoundManager.Instance.PlaySound3D("Poin", transform.position);
             ScoreSystem.TerasiHit();
-            Destroy(other.gameObject); 
+            Destroy(other.gameObject);
         }
     }
 
+    // Perbarui warna bar
     void UpdateHealthBarColor()
     {
         // Gunakan nilai normalisasi untuk mengevaluasi gradient
         Fill.color = Gradient.Evaluate(HealthBar.normalizedValue);
     }
+
+
+    //public void EnemyHit()
+    //{
+    //    _currentHealth -= 50f; 
+    //    SoundManager.Instance.PlaySound3D("Die", transform.position);
+    //    if (_currentHealth < 0)
+    //    {
+    //        _currentHealth = 0; 
+    //        PlayerManager.GameOver = true; 
+    //    }
+    //    HealthBar.value = _currentHealth; 
+    //    UpdateHealthBarColor(); 
+    //}
 }

@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8574450142504511603
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8996132539981997899}
+  - component: {fileID: 3426838356470362662}
+  m_Layer: 0
+  m_Name: StreetManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8996132539981997899
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8574450142504511603}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.087155774, y: -0, z: -0, w: 0.9961948}
+  m_LocalPosition: {x: 0, y: -2.1115952, z: 3.5845604}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3426838356470362662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8574450142504511603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fedd013aa3f71b44e9dd6a8a619e7f7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  JalanPrefabs:
+  - {fileID: 4243243685745109892, guid: 1cfb2c683a7bfd14f825dd59fa06ad67, type: 3}
+  - {fileID: 648570363832512368, guid: 0fc5db73d12c96543bdb355f3a364b4a, type: 3}
+  - {fileID: 2905796145546440381, guid: 4a9b7472dfb828446baad75b76d0fffb, type: 3}
+  - {fileID: 5265475301962455145, guid: 5faa0ab72c5157b418c2ddd0a93ba79d, type: 3}
+  - {fileID: 147414075641398385, guid: a224d6d537a9a7d42a3222d4db84270b, type: 3}
+  ZSpawn: 0
+  JalanLength: 69
+  NumberOfJalan: 10
+  PlayerTransform: {fileID: 0}

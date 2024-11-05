@@ -7,6 +7,7 @@ public class PlayerManager : MonoBehaviour
     public static bool GameOver;
     public GameObject GameOverPanel;
     public GameObject WinPanel; // Panel untuk kondisi menang
+    public GameObject HTPButton;
     public GameObject HUD;
     public ScoreSystem ScoreSystem;
     public HealthManager HealthManager; // Referensi ke HealthManager
@@ -51,27 +52,27 @@ public class PlayerManager : MonoBehaviour
     IEnumerator GameOverSequence()
     {
         PlayerAnimator.SetTrigger("Die");
-        yield return new WaitForSecondsRealtime(2f); // Menunggu hingga animasi "Die" selesai
+        yield return new WaitForSecondsRealtime(4f); 
 
         Time.timeScale = 0;
         HUD.SetActive(false);
         GameOverPanel.SetActive(true);
         if (ScoreSystem != null)
         {
-            ScoreSystem.DisplayGameOverScore(); // Tampilkan skor saat game over
+            ScoreSystem.DisplayGameOverScore(); 
         }
     }
 
     IEnumerator WinSequence()
     {
-        //PlayerAnimator.SetTrigger("Win"); // Jika ada animasi kemenangan
-        yield return new WaitForSecondsRealtime(2f); // Menunggu hingga animasi "Win" selesai
+        //PlayerAnimator.SetTrigger("Win"); 
+        yield return new WaitForSecondsRealtime(2f); 
         Time.timeScale = 0;
         HUD.SetActive(false);
-        WinPanel.SetActive(true); // Tampilkan UI untuk kondisi menang
+        WinPanel.SetActive(true); 
         if (ScoreSystem != null)
         {
-            ScoreSystem.DisplayGameOverScore(); // Tampilkan skor saat menang
+            ScoreSystem.DisplayGameOverScore(); 
         }
     }
 }

@@ -11,7 +11,7 @@ public class PowerUp : MonoBehaviour
             PlayerControl playerControl = other.GetComponent<PlayerControl>();
             if (playerControl != null)
             {
-                playerControl.ActivatePowerUp();
+                //playerControl.ActivatePowerUp();
                 Destroy(gameObject); // Menghancurkan power-up setelah dikumpulkan
             }
         }
