@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +7,10 @@ using UnityEngine.UI;
 public class HealthManager : MonoBehaviour
 {
     public Slider HealthBar;
-    public float MaxHealth = 50f;
+    public float MaxHealth;
     private float _currentHealth;
-    public float HealthDecreaseRate = 2f;
-    public float HealthIncreaseAmount = 3f;
+    public float HealthDecreaseRate;
+    public float HealthIncreaseAmount;
     public Gradient Gradient;
     public Image Fill;
 
@@ -67,6 +68,7 @@ public class HealthManager : MonoBehaviour
     {
         _currentHealth -= 10f;
         SoundManager.Instance.PlaySound3D("Die", transform.position);
+        Debug.Log("nabrak anjay!");
         if (_currentHealth < 0)
         {
             _currentHealth = 0;

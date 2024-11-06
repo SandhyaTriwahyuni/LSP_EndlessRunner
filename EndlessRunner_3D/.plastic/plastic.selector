@@ -1,0 +1,4 @@
+repository "LSP@OOPAnimasi@cloud"
+  path "/"
+    br "/main"
+    co "/main"

@@ -66,7 +66,7 @@ public class PlayerManager : MonoBehaviour
     IEnumerator WinSequence()
     {
         //PlayerAnimator.SetTrigger("Win"); 
-        yield return new WaitForSecondsRealtime(2f); 
+        yield return new WaitForSecondsRealtime(0f); 
         Time.timeScale = 0;
         HUD.SetActive(false);
         WinPanel.SetActive(true); 
