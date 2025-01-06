@@ -93,4 +93,30 @@ public class MusicManager : MonoBehaviour
             yield return null;
         }
     }
+
+    public void FadeOutMusic(float duration = 0.5f)
+    {
+        StartCoroutine(FadeVolume(0f, duration));
+    }
+
+    public void FadeInMusic(float duration = 0.5f)
+    {
+        StartCoroutine(FadeVolume(originalVolume, duration));
+    }
+
+    public void PauseMusic()
+    {
+        if (musicSource.isPlaying)
+        {
+            musicSource.Pause();
+        }
+    }
+
+    public void ResumeMusic()
+    {
+        if (!musicSource.isPlaying)
+        {
+            musicSource.UnPause();
+        }
+    }
 }

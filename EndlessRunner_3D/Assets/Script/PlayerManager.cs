@@ -19,6 +19,9 @@ public class PlayerManager : MonoBehaviour
     public PlayerControl playerControl;
     public Animator PlayerAnimator;
 
+    [SerializeField] private CutsceneManager cutsceneManager;
+    private bool hasWon = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,14 +33,16 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameOver)
+        if (ScoreSystem != null && ScoreSystem.HasPlayerWon() && !hasWon)
         {
-            StartCoroutine(GameOverSequence());
+            hasWon = true;  // Set flag agar tidak berulang
+            StartCoroutine(WinSequence());
         }
 
-        if (ScoreSystem != null && ScoreSystem.HasPlayerWon())
+        // Cek game over hanya jika belum menang
+        if (GameOver && !hasWon)
         {
-            StartCoroutine(WinSequence()); // Panggil WinSequence jika skor sudah mencapai max
+            StartCoroutine(GameOverSequence());
         }
 
         // Detect Enter key to start the game
@@ -65,14 +70,24 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator WinSequence()
     {
-        //PlayerAnimator.SetTrigger("Win"); 
-        yield return new WaitForSecondsRealtime(0f); 
-        Time.timeScale = 0;
+        if (cutsceneManager != null)
+        {
+            cutsceneManager.PlayCutscene();
+        }
+
+        yield return null;
+    }
+    public void ShowWinPanel()
+    {
         HUD.SetActive(false);
-        WinPanel.SetActive(true); 
+        WinPanel.SetActive(true);
+        GameOverPanel.SetActive(false);  // Pastikan GameOverPanel tidak aktif
+
         if (ScoreSystem != null)
         {
-            ScoreSystem.DisplayGameOverScore(); 
+            ScoreSystem.DisplayGameOverScore();
         }
+
+        Time.timeScale = 0;  // Pause game setelah menampilkan panel
     }
 }
