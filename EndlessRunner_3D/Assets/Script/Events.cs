@@ -8,6 +8,7 @@ public class Events : MonoBehaviour
     [SerializeField] GameObject PauseMenu;
     [SerializeField] GameObject HowToPlay;
     [SerializeField] GameObject HTPButton;
+    [SerializeField] GameObject HUD;
     public PlayerManager PlayerManager;
 
     private bool isPaused = false;
@@ -47,6 +48,7 @@ public class Events : MonoBehaviour
         if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
         {
             PauseMenu.SetActive(true);
+            HUD.SetActive(false);
             Time.timeScale = 0;
             isPaused = true;
         }

@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour
     public float JumpForce;
     public float MaxJumpForce;
 
-    public float Gravity = -10;
+    public float Gravity;
     private bool isJumping = false;
 
     private Animator _animator;
@@ -95,7 +95,7 @@ public class PlayerControl : MonoBehaviour
         if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
         {
             Vector3 currentPosition = transform.position;
-            Vector3 nextPosition = Vector3.Lerp(currentPosition, _targetPosition, LaneChangeSpeed * Time.deltaTime);
+            Vector3 nextPosition = Vector3.MoveTowards(currentPosition, _targetPosition, LaneChangeSpeed * Time.deltaTime);
             Vector3 moveDirection = nextPosition - currentPosition;
 
             _characterController.Move(moveDirection + _direction * Time.deltaTime);
@@ -140,7 +140,7 @@ public class PlayerControl : MonoBehaviour
     {
         // Menghitung posisi target berdasarkan lane yang diinginkan
         Vector3 lanePosition = new Vector3((_desiredLane - 1) * LaneDistance, transform.position.y, transform.position.z);
-        _targetPosition = Vector3.Lerp(transform.position, lanePosition, Time.deltaTime * LaneChangeSpeed);
+        _targetPosition = new Vector3((_desiredLane - 1) * LaneDistance, transform.position.y, transform.position.z);
     }
 
     private void UpdateDistanceUI()

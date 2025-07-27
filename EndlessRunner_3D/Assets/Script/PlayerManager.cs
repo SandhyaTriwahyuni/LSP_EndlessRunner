@@ -28,6 +28,7 @@ public class PlayerManager : MonoBehaviour
         GameOver = false;
         Time.timeScale = 1; // untuk replay
         IsGameStarted = false;
+        HUD.SetActive(false);
     }
 
     // Update is called once per frame
@@ -51,6 +52,7 @@ public class PlayerManager : MonoBehaviour
             playerControl.enabled = true;
             IsGameStarted = true;
             Destroy(StartingText);
+            HUD.SetActive(true);
         }
     }
 

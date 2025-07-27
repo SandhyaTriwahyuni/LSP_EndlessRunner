@@ -7,9 +7,9 @@ public class StreetManager : MonoBehaviour
     public GameObject[] JalanPrefabs; 
     public float ZSpawn; 
     public float JalanLength; 
-    public int NumberOfJalan; 
+    public int NumberOfJalan;
 
-    private List<GameObject> _activeJalan = new List<GameObject>(); 
+    private List<Transform> _activeJalan = new List<Transform>();
     private Queue<int> _lastSpawnedIndexes = new Queue<int>(); 
 
     public Transform PlayerTransform; 
@@ -25,8 +25,11 @@ public class StreetManager : MonoBehaviour
 
     void Update()
     {
-        // Periksa apakah posisi pemain sudah melewati batas untuk spawn jalan baru
-        if (PlayerTransform.position.z - 35 > ZSpawn - (NumberOfJalan * JalanLength))
+        float playerZ = PlayerTransform.position.z;
+        float threshold = ZSpawn - (NumberOfJalan * JalanLength);
+        Debug.Log($"PlayerZ: {playerZ}, Threshold: {threshold}");
+
+        if (playerZ - 10 > threshold)
         {
             SpawnJalan(GetRandomJalanIndex());
             DeleteJalan();
@@ -36,8 +39,9 @@ public class StreetManager : MonoBehaviour
     public void SpawnJalan(int JalanIndex)
     {
         // Instansiasi jalan baru dan menambahkannya ke daftar aktif
-        GameObject go = Instantiate(JalanPrefabs[JalanIndex], transform.forward * ZSpawn, transform.rotation);
-        _activeJalan.Add(go);
+        Transform jalanTransform = Instantiate(JalanPrefabs[JalanIndex], transform.forward * ZSpawn, transform.rotation).transform;
+        _activeJalan.Add(jalanTransform);
+
         ZSpawn += JalanLength; // Perbarui posisi spawn
 
         // Tambahkan indeks ke antrian dan pastikan antrian tidak terlalu panjang
@@ -50,9 +54,15 @@ public class StreetManager : MonoBehaviour
 
     private void DeleteJalan()
     {
-        // Hapus jalan yang paling awal dari daftar aktif
-        Destroy(_activeJalan[0]);
-        _activeJalan.RemoveAt(0);
+        if (_activeJalan.Count == 0) return;
+
+        Transform jalan = _activeJalan[0];
+
+        if (PlayerTransform.position.z > jalan.position.z + JalanLength)
+        {
+            Destroy(jalan.gameObject);
+            _activeJalan.RemoveAt(0);
+        }
     }
 
     private int GetRandomJalanIndex()
@@ -71,4 +81,10 @@ public class StreetManager : MonoBehaviour
 
         return randomIndex;
     }
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(new Vector3(-5, 0, ZSpawn), new Vector3(5, 0, ZSpawn));
+    }
+
 }

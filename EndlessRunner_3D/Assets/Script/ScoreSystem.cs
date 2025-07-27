@@ -6,6 +6,7 @@ public class ScoreSystem : MonoBehaviour
     public TextMeshProUGUI ScoreTextHUD; // Untuk UI HUD
     public TextMeshProUGUI ScoreTextGameOver; // Untuk UI Game Over
     public TextMeshProUGUI ScoreTextWin; // Untuk UI Win
+    public TextMeshProUGUI ScoreTextPause; // Untuk UI Win
 
     private float _score;
     private float _currentScore;
@@ -56,18 +57,23 @@ public class ScoreSystem : MonoBehaviour
         {
             ScoreTextHUD.text = Mathf.Round(_score).ToString() + "/100";
         }
+
+        if (ScoreTextPause != null)
+        {
+            ScoreTextPause.text = Mathf.Round(_score).ToString() + "/100";
+        }
     }
 
     public void DisplayGameOverScore()
     {
         if (ScoreTextGameOver != null)
         {
-            ScoreTextGameOver.text = "TERASI: " + Mathf.Round(_score).ToString();
+            ScoreTextGameOver.text = "KAYU BAKAR: " + Mathf.Round(_score).ToString();
         }
 
         if (ScoreTextWin != null) // Pastikan ini hanya diupdate di kondisi menang
         {
-            ScoreTextWin.text = "TERASI: " + Mathf.Round(_score).ToString();
+            ScoreTextWin.text = "KAYU BAKAR: " + Mathf.Round(_score).ToString();
         }
     }
     public bool HasPlayerWon()
