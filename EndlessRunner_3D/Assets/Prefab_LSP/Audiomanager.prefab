@@ -82,9 +82,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tracks:
   - trackName: MainMenu
-    clip: {fileID: 8300000, guid: 9c17518af0ff64b43937bb0ddba17ec5, type: 3}
-  - trackName: GamePlay
     clip: {fileID: 8300000, guid: f921524bd61e7264db5e6250eb83ff5e, type: 3}
+  - trackName: GamePlay
+    clip: {fileID: 8300000, guid: 9c17518af0ff64b43937bb0ddba17ec5, type: 3}
 --- !u!114 &8014503577215138282
 MonoBehaviour:
   m_ObjectHideFlags: 0

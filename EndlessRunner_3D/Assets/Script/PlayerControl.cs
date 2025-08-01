@@ -154,6 +154,7 @@ public class PlayerControl : MonoBehaviour
         if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
         {
             _desiredLane = Mathf.Max(0, _desiredLane - 1);
+            SoundManager.Instance.PlaySound3D("swipe", transform.position);
         }
     }
 
@@ -162,6 +163,7 @@ public class PlayerControl : MonoBehaviour
         if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
         {
             _desiredLane = Mathf.Min(2, _desiredLane + 1);
+            SoundManager.Instance.PlaySound3D("swipe", transform.position);
         }
     }
 
@@ -169,6 +171,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
             Jump();
+        SoundManager.Instance.PlaySound3D("swipe", transform.position);
     }
 
     void OnSwipeDown()
@@ -178,6 +181,7 @@ public class PlayerControl : MonoBehaviour
             _animator.SetTrigger("Slide");
             StartCoroutine(SlideCoroutine());
         }
+        SoundManager.Instance.PlaySound3D("swipe", transform.position);
     }
 
     private void Jump()

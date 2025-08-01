@@ -15,21 +15,27 @@ public class MusicManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
+        // Cegah duplikat MusicManager
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            originalVolume = musicSource.volume;
-        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        originalVolume = musicSource.volume;
     }
 
     public void PlayMusic(string trackName, float fadeDuration = 0.5f)
     {
-        StartCoroutine(AnimateMusicCrossfade(musicLibrary.GetClipFromName(trackName), fadeDuration));
+        AudioClip nextClip = musicLibrary.GetClipFromName(trackName);
+
+        // Jangan memutar ulang jika lagu sudah berjalan
+        if (musicSource.clip == nextClip && musicSource.isPlaying)
+            return;
+
+        StartCoroutine(AnimateMusicCrossfade(nextClip, fadeDuration));
     }
 
     public void PlayImportantSound(AudioClip clip, Vector3 pos)

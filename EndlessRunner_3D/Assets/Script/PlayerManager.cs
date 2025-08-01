@@ -40,7 +40,6 @@ public class PlayerManager : MonoBehaviour
             StartCoroutine(WinSequence());
         }
 
-        // Cek game over hanya jika belum menang
         if (GameOver && !hasWon)
         {
             StartCoroutine(GameOverSequence());
@@ -59,11 +58,13 @@ public class PlayerManager : MonoBehaviour
     IEnumerator GameOverSequence()
     {
         PlayerAnimator.SetTrigger("Die");
-        yield return new WaitForSecondsRealtime(4f); 
+        yield return new WaitForSecondsRealtime(4f);
 
         Time.timeScale = 0;
         HUD.SetActive(false);
         GameOverPanel.SetActive(true);
+        SoundManager.Instance.PlaySound3D("Game Over", transform.position);
+
         if (ScoreSystem != null)
         {
             ScoreSystem.DisplayGameOverScore(); 

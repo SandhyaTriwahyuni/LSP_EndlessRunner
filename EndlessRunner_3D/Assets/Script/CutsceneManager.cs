@@ -13,7 +13,7 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] private PlayerManager playerManager;
 
     [Header("Audio Settings")]
-    [SerializeField] private float musicFadeDuration = 0.5f;
+    [SerializeField] private float musicFadeDuration;
 
     private bool isCutscenePlaying = false;
 

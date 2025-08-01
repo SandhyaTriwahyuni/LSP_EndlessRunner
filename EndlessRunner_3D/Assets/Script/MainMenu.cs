@@ -17,13 +17,14 @@ public class MainMenu : MonoBehaviour
         LoadVolume();
         Time.timeScale = 1;
 
-        //Memainkan music
+        // Memainkan lagu MainMenu
         MusicManager.Instance.PlayMusic("MainMenu");
     }
+
     public void PlayGame()
     {
+        MusicManager.Instance.PlayMusic("GamePlay"); 
         SceneManager.LoadScene("GamePlay");
-        MusicManager.Instance.PlayMusic("GamePlay");
     }
 
     public void UpdateMusicVolume(float volume)

@@ -59,6 +59,7 @@ public class Events : MonoBehaviour
         if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
         {
             PauseMenu.SetActive(false);
+            HUD.SetActive(true);
             Time.timeScale = 1;
             isPaused = false;
         }
