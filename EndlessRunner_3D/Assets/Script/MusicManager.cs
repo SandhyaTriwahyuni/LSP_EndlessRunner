@@ -15,7 +15,7 @@ public class MusicManager : MonoBehaviour
 
     private void Awake()
     {
-        // Cegah duplikat MusicManager
+      
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -31,7 +31,6 @@ public class MusicManager : MonoBehaviour
     {
         AudioClip nextClip = musicLibrary.GetClipFromName(trackName);
 
-        // Jangan memutar ulang jika lagu sudah berjalan
         if (musicSource.clip == nextClip && musicSource.isPlaying)
             return;
 
@@ -51,14 +50,10 @@ public class MusicManager : MonoBehaviour
             float fadeOutDuration = 0.5f;
             float fadeInDuration = 0.5f;
 
-            // Fade out music volume
+     
             yield return StartCoroutine(FadeVolume(duckVolume, fadeOutDuration));
-
-            // Play the important sound
             AudioSource.PlayClipAtPoint(clip, pos);
             yield return new WaitForSeconds(clip.length);
-
-            // Fade in music volume
             yield return StartCoroutine(FadeVolume(originalVolume, fadeInDuration));
         }
     }

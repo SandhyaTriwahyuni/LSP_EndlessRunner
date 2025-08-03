@@ -53,7 +53,6 @@ public class AudioSourcePool : MonoBehaviour
             }
         }
 
-        // Jika tidak ada yang tersedia, buat yang baru
         return CreateNewAudioSource();
     }
 

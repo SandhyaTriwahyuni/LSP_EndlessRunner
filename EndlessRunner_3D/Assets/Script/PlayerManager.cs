@@ -84,13 +84,13 @@ public class PlayerManager : MonoBehaviour
     {
         HUD.SetActive(false);
         WinPanel.SetActive(true);
-        GameOverPanel.SetActive(false);  // Pastikan GameOverPanel tidak aktif
+        GameOverPanel.SetActive(false);  
 
         if (ScoreSystem != null)
         {
             ScoreSystem.DisplayGameOverScore();
         }
 
-        Time.timeScale = 0;  // Pause game setelah menampilkan panel
+        Time.timeScale = 0;  
     }
 }

@@ -71,7 +71,7 @@ public class ScoreSystem : MonoBehaviour
             ScoreTextGameOver.text = "KAYU BAKAR: " + Mathf.Round(_score).ToString();
         }
 
-        if (ScoreTextWin != null) // Pastikan ini hanya diupdate di kondisi menang
+        if (ScoreTextWin != null) 
         {
             ScoreTextWin.text = "KAYU BAKAR: " + Mathf.Round(_score).ToString();
         }

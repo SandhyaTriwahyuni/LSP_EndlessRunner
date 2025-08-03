@@ -11,7 +11,7 @@ public class SoundManager : MonoBehaviour
     private SoundLibrary sfxLibrary;
 
     [SerializeField]
-    private AudioMixerGroup sfxMixerGroup; // Add this to assign SFX group
+    private AudioMixerGroup sfxMixerGroup; 
 
     private void Awake()
     {
@@ -34,7 +34,7 @@ public class SoundManager : MonoBehaviour
             AudioSource source = AudioSourcePool.Instance.GetAudioSource();
             source.transform.position = pos;
             source.clip = clip;
-            source.outputAudioMixerGroup = sfxMixerGroup; // Set to SFX mixer group
+            source.outputAudioMixerGroup = sfxMixerGroup; 
             source.Play();
             StartCoroutine(ReturnSourceToPool(source, clip.length));
         }
@@ -48,7 +48,7 @@ public class SoundManager : MonoBehaviour
             AudioSource source = AudioSourcePool.Instance.GetAudioSource();
             source.transform.position = Camera.main.transform.position;
             source.clip = clip;
-            source.outputAudioMixerGroup = sfxMixerGroup; // Set to SFX mixer group
+            source.outputAudioMixerGroup = sfxMixerGroup; 
             source.Play();
             StartCoroutine(ReturnSourceToPool(source, clip.length));
         }

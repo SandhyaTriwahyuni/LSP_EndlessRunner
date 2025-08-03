@@ -30,11 +30,10 @@ public class HealthManager : MonoBehaviour
     {
         if (PlayerManager.IsGameStarted && !PlayerManager.GameOver)
         {
-            DecreaseHealth(); // Kurangi health saat game sudah dimulai dan belum game over
+            DecreaseHealth(); 
         }
     }
 
-    //Mengurangi tenaga perdetik
     void DecreaseHealth()
     {
         _currentHealth -= HealthDecreaseRate * Time.deltaTime;
@@ -49,7 +48,7 @@ public class HealthManager : MonoBehaviour
 
     public void IncreaseHealth()
     {
-        // Hanya izinkan peningkatan kesehatan jika game belum berakhir
+
         if (!PlayerManager.GameOver)
         {
             _currentHealth += HealthIncreaseAmount;
@@ -63,7 +62,6 @@ public class HealthManager : MonoBehaviour
     }
 
 
-    // Mengurangi tenaga sebesar 10 ketika terkena obstacle
     public void ObstacleHit()
     {
         _currentHealth -= 10f;
@@ -92,21 +90,9 @@ public class HealthManager : MonoBehaviour
     // Perbarui warna bar
     void UpdateHealthBarColor()
     {
-        // Gunakan nilai normalisasi untuk mengevaluasi gradient
+ 
         Fill.color = Gradient.Evaluate(HealthBar.normalizedValue);
     }
 
 
-    //public void EnemyHit()
-    //{
-    //    _currentHealth -= 50f; 
-    //    SoundManager.Instance.PlaySound3D("Die", transform.position);
-    //    if (_currentHealth < 0)
-    //    {
-    //        _currentHealth = 0; 
-    //        PlayerManager.GameOver = true; 
-    //    }
-    //    HealthBar.value = _currentHealth; 
-    //    UpdateHealthBarColor(); 
-    //}
 }

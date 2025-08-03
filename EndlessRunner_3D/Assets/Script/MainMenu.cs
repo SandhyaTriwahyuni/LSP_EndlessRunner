@@ -17,7 +17,7 @@ public class MainMenu : MonoBehaviour
         LoadVolume();
         Time.timeScale = 1;
 
-        // Memainkan lagu MainMenu
+
         MusicManager.Instance.PlayMusic("MainMenu");
     }
 

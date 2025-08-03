@@ -15,7 +15,7 @@ public class Events : MonoBehaviour
 
     void Update()
     {
-        // Jika tombol Escape ditekan
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused)
